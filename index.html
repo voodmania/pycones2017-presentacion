@@ -1,0 +1,407 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Diccionarios - Una mirada a fondo</title>
+		<meta name="description" content="Descubre como funcionan dentro de Python">
+		<meta name="author" content="Alberto Fernandéz Valiente">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- diapositiva 1 -->
+				<section data-background-image="img/ayesa.png" data-background-size="15%" data-background-position="75% 90%">
+					<h1>Diccionarios</h1>
+					<h2>Una mirada a fondo</h2>
+					<p>
+						<small>Por Alberto Fernández Valiente</small>
+					</p>
+				</section>
+				
+				<!-- diapositiva 2 -->
+				<section>
+					<h2>¿Por qué?</h2>
+					<ul>
+						<li>Es la estructura de datos más utilizada dentro de Python</li>
+						<li>Su rendimiento afecta a cualquier código</li>
+						<li>Ayudan a expresar problemas de una forma más simple</li>
+					</ul>
+				</section>
+				
+				<!-- diapositiva 3 -->
+				<section>
+					<section>
+						<h2>¿Dónde están?</h2>
+						<ul>
+							<li>Espacio de nombres global</li>
+							<li>Módulos</li>
+							<li>Clases</li>
+							<li>Instancias</li>
+							<li>Espacio de nombres local</li>
+						</ul>
+					</section>
+					
+					<section>
+						<h2>¿Dónde están?</h2>
+						<ul>
+							<li>Espacio de nombres global</li>
+							<li>Módulos</li>
+							<li>Clases</li>
+							<li>Instancias</li>
+							<li><del>Espacio de nombres local</del></li>
+						</ul>
+					</section>
+				</section>
+
+				<!-- diapositiva 4 -->
+				<section>
+					<h2>¿Qué es un diccionario?</h2>
+					<p>Estructura de datos que almacena asociaciones entre pares clave-valor, sin repeticiones de claves. Permite realizar operaciones de inserción, eliminación y consulta de valores pasando como párametro su clave. Respecto a otras estructuras de datos, estas operaciones tienen O(1).</p>
+				</section>
+
+				<!-- diapositiva 5 -->
+				<section>
+					<h2>¿Cómo funciona un diccionario?</h2>
+					<p>Una tabla con columnas clave y valor, donde la clave tiene que ser de tipo inmutable. En Python, el tamaño inicial de la tabla es 8 filas.</p>
+				</section>
+
+				<!-- diapositiva 7 -->
+				<section>
+					<!-- Ejemplo de la estructura de un diccionario simple -->
+					<table>
+						<thead>
+							<tr>
+								<th>Indice</th>
+								<th>Hash</th>
+								<th>Clave</th>
+								<th>Valor</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>000</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>001</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>010</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>011</td>
+								<td>...10101011</td>
+								<td>b</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>100</td>
+								<td>...10001100</td>
+								<td>c</td>
+								<td>3</td>
+							</tr>
+							<tr>
+								<td>101</td>
+								<td>...11000101</td>
+								<td>a</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>110</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>111</td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<!-- diapositiva 7 -->
+				<section>
+					<h3>¿Qué hace especial a los diccionarios en Python?</h3>
+					<ul>
+						<li>SipHash</li>
+						<li>Comprobaciones de claves</li>
+						<li>Claves compartidas</li>
+						<li>Campo de versión privada</li>
+						<li>Diccionario compacto</li>
+					</ul>
+				</section>
+
+				<!-- diapositiva 8 -->
+				<section>
+					<h3>SipHash</h3>
+					<p>En el 29c3 de 2011 se presentó un ataque contra los algoritmos de hash en varias plataformas web. Inicialmente se añade una semilla aleatoria, pero en Python 3.4 se reemplaza el algoritmo porque seguía siendo inseguro.</p>
+				</section>
+
+				<!-- diapositiva 9 -->
+				<section>
+					<h3>Comprobaciones de claves</h3>
+					<p>Para detectar una colisión hay que comprobar que las claves son distintas. La comparación directa puede ser muy costosa, así que utilizamos salidas anticipadas.</p>
+					<pre>
+						<code>
+		def check(a, b):
+			if a is b: return True
+			if a.hash == b.hash: return False
+			return a == b
+						</code>
+					</pre>
+				</section>
+				
+				<!-- diapositiva 10 -->
+				<section>
+					<h3>Claves compartidas</h3>
+					<p>En Python 3.3 se modificó el comportamiento de los diccionarios para optimizar el funcionamiento de las clases. Se separan las claves de los valores y así el diccionario de atributos solo guarda una copia de los mismos. Para aprovecharlo debemos inicializar todos los atributos dentro del __init__ de la clase.</p>
+				</section>
+
+				<!-- diapositiva 11 -->
+				<section>
+					<!-- Ejemplo de la estructura de un diccionario compartido -->
+					<table>
+						<thead>
+							<tr>
+								<th>Indice</th>
+								<th>Hash</th>
+								<th>Clave</th>
+								<th>Objeto 1</th>
+								<th>Objeto 2</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>000</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>001</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>010</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>011</td>
+								<td>...10101011</td>
+								<td>b</td>
+								<td>2</td>
+								<td>5</td>
+							</tr>
+							<tr>
+								<td>100</td>
+								<td>...10001100</td>
+								<td>c</td>
+								<td>3</td>
+								<td>6</td>
+							</tr>
+							<tr>
+								<td>101</td>
+								<td>...11000101</td>
+								<td>a</td>
+								<td>1</td>
+								<td>4</td>
+							</tr>
+							<tr>
+								<td>110</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+							<tr>
+								<td>111</td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<!-- diapositiva 12 -->
+				<section>
+					<h3>Campo de versión privada</h3>
+					<p>Dentro del núcleo de Python se realizan muchas búsquedas sobre diccionarios que son repetidas constantemente aunque éstos no hayan sido modificados.</p>
+					<p>En Python 3.6 se ha añadido un número privado de versión que solo se actualiza cuando es modificado. Esto permite realizar optimizaciones en tiempo de ejecución si éste no ha cambiado.</p>
+				</section>
+				
+				<!-- diapositiva 13 -->
+				<section>
+					<h3>Diccionario compacto</h3>
+					<p>La idea surgió en 2012 y no fue implementada en PyPy hasta 2015. En Junio de 2016 Inada Naoki abre la issue 27350, en Septiembre durante un sprint de los desarrolladores Core deciden añadirlo a la versión 3.6.</p>
+					<p>Se añade un array de índices y se sustituye la tabla por una lista de elementos que crece cuando se añaden pares clave-valor. Esto permite que las claves queden ordenadas según su inserción.</p>
+				</section>
+				
+				<!-- diapositiva 14 -->
+				<section>
+					<!-- Ejemplo de la estructura de un diccionario compacto -->
+					<table>
+						<thead>
+							<tr>
+								<th>000</th>
+								<th>001</th>
+								<th>010</th>
+								<th>011</th>
+								<th>100</th>
+								<th>101</th>
+								<th>110</th>
+								<th>111</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0</td>
+								<td>0</td>
+								<td>0</td>
+								<td>2</td>
+								<td>3</td>
+								<td>1</td>
+								<td>0</td>
+								<td>0</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<hr>
+					
+					<table>
+						<thead>
+							<tr>
+								<th>Indice</th>
+								<th>Hash</th>
+								<th>Clave</th>
+								<th>Valor</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>...11000101</td>
+								<td>a</td>
+								<td>1</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>...10101011</td>
+								<td>b</td>
+								<td>2</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>...10001100</td>
+								<td>c</td>
+								<td>3</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+
+				<!-- diapositiva 15 -->
+				<section>
+					<h1>Referencias</h1>
+					<ul>
+						<li>
+							<a href="https://www.youtube.com/watch?v=npw4s1QTmPg">
+								Raymond Hettinger - Modern Python Dictionaries A confluence of a dozen great ideas
+							</a>
+						</li>
+						<li>
+							<a href="https://www.youtube.com/watch?v=66P5FMkWoVU">
+								Brandon Rhodes - The Dictionary Even Mightier
+							</a>
+						</li>
+						<li>
+							<a href="http://www.laurentluce.com/posts/python-dictionary-implementation/">
+								Laurent Luce - Python dictionary implementation
+							</a>
+						</li>
+						<li>
+							<a href="https://www.python.org/dev/peps/pep-0412/">
+								PEP 412 - Key-Sharing Dictionary
+							</a>
+						</li>
+						<li>
+							<a href="https://www.python.org/dev/peps/pep-0456/">
+								PEP 456 -- Secure and interchangeable hash algorithm
+							</a>
+						</li>
+						<li>
+							<a href="https://www.python.org/dev/peps/pep-0509/">
+								PEP 509 – Add a private version to dict
+							</a>
+						</li>
+						<li>
+							<a href="https://bugs.python.org/issue27350">
+								Issue 27350 - Compact and ordered dict
+							</a>
+						</li>
+					</ul>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			Reveal.initialize({
+				history: true,
+				controls: false,
+				progress: false,
+				overview: false,
+				dependencies: [
+					// { src: 'plugin/markdown/marked.js' },
+					// { src: 'plugin/markdown/markdown.js' },
+					// { src: 'plugin/notes/notes.js', async: true },
+					// { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
